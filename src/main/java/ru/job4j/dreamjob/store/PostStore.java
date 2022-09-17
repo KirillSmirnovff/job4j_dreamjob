@@ -27,7 +27,7 @@ public class PostStore {
     }
 
     public void add(Post post) {
-        post.setId(counter.get());
-        posts.put(counter.getAndIncrement(), post);
+        post.setId(counter.getAndIncrement());
+        posts.put(post.getId(), post);
     }
 }
