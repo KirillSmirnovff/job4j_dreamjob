@@ -32,14 +32,10 @@ public class PostStore {
     }
 
     public Post findById(int id) {
-        Post post = posts.get(id);
-        int postId = post.getId();
-        String postName = post.getName();
-        String postDesc = post.getDescription();
-        return new Post(postId, postName, postDesc);
+        return posts.get(id);
     }
 
-    public void update(Post post) {
+    public void replace(Post post) {
         System.out.println(post.getId());
         System.out.println(post.getName());
         System.out.println(post.getDescription());

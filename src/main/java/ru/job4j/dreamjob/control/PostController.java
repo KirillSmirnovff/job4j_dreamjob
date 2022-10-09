@@ -37,7 +37,7 @@ public class PostController {
 
     @PostMapping("/updatePost")
     public String updatePost(@ModelAttribute Post post) {
-        store.update(post);
+        store.replace(post);
         return "redirect:/posts";
     }
 
