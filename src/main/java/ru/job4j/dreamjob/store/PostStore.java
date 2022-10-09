@@ -39,6 +39,6 @@ public class PostStore {
         System.out.println(post.getId());
         System.out.println(post.getName());
         System.out.println(post.getDescription());
-        posts.put(post.getId(), post);
+        posts.replace(post.getId(), post);
     }
 }
