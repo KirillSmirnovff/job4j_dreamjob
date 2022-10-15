@@ -29,9 +29,6 @@ public class CandidateController {
     @PostMapping("/createCandidate")
     public String createCandidate(@ModelAttribute Candidate candidate) {
         candidateStore.add(candidate);
-        System.out.println(candidate.getId());
-        System.out.println(candidate.getName());
-        System.out.println(candidate.getDescription());
         return "redirect:/candidates";
     }
 
