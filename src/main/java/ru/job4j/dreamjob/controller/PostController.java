@@ -12,7 +12,11 @@ import ru.job4j.dreamjob.service.PostService;
 @Controller
 public class PostController {
 
-    private final PostService service = PostService.instOf();
+    private final PostService service;
+
+    public PostController(PostService postService) {
+        this.service = postService;
+    }
 
     @GetMapping("/posts")
     public String posts(Model model) {
@@ -28,9 +32,6 @@ public class PostController {
     @PostMapping("/createPost")
     public String createPost(@ModelAttribute Post post) {
         service.add(post);
-        System.out.println(post.getId());
-        System.out.println(post.getName());
-        System.out.println(post.getDescription());
         return "redirect:/posts";
     }
 
