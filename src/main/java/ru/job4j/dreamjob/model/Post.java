@@ -9,6 +9,7 @@ public class Post {
     private String name;
     private String description;
     private final LocalDate created = LocalDateTime.now().toLocalDate();
+    private boolean visible;
 
     public Post() { }
 
@@ -37,6 +38,14 @@ public class Post {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     public String getDescription() {
