@@ -10,6 +10,7 @@ public class Candidate {
     private String name;
     private String description;
     private final LocalDate created = LocalDateTime.now().toLocalDate();
+    private City city;
 
     public Candidate() { }
 
@@ -50,6 +51,14 @@ public class Candidate {
 
     public LocalDate getCreated() {
         return created;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 
     @Override

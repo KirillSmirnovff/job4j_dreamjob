@@ -42,6 +42,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Имя</th>
                 <th scope="col">Информация</th>
+                <th scope="col">Город</th>
                 <th scope="col">Создано</th>
             </tr>
             </thead>
@@ -55,6 +56,7 @@
                     <span th:text="${candidate.name}"></span>
                 </td>
                 <td th:text="${candidate.description}" />
+                <td th:text="${candidate.city.name}" />
                 <td th:text="${candidate.created}" />
             </tr>
             </tbody>
