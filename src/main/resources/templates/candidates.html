@@ -42,6 +42,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Имя</th>
                 <th scope="col">Информация</th>
+                <th scope="col">Фотография</th>
                 <th scope="col">Город</th>
                 <th scope="col">Создано</th>
             </tr>
@@ -56,6 +57,9 @@
                     <span th:text="${candidate.name}"></span>
                 </td>
                 <td th:text="${candidate.description}" />
+                <td>
+                    <img th:width="150" th:high="150" th:src="@{|/photoCandidate/${candidate.id}|}">
+                </td>
                 <td th:text="${candidate.city.name}" />
                 <td th:text="${candidate.created}" />
             </tr>
