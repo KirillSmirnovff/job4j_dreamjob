@@ -6,6 +6,7 @@ import ru.job4j.dreamjob.model.Post;
 import ru.job4j.dreamjob.store.PostDBStore;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @ThreadSafe
 @Service
@@ -26,7 +27,12 @@ public class PostService {
     }
 
     public Post findById(int id) {
-        return store.findById(id);
+        Post rsl = new Post();
+        Optional<Post> post = store.findById(id);
+        if (post.isPresent()) {
+            rsl = post.get();
+        }
+        return rsl;
     }
 
     public void replace(Post post) {
