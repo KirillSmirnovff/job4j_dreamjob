@@ -25,9 +25,10 @@ public class PostDBStore {
         this.pool = pool;
     }
 
-    private Post createPost(ResultSet it) throws SQLException {
+    private Post createPost(ResultSet it, CityService cityService) throws SQLException {
         return new Post(it.getInt("id"), it.getString("name"),
                 it.getString("description"), it.getBoolean("visible"),
+                cityService.findById(it.getInt("city_id")),
                 it.getTimestamp("created").toLocalDateTime().toLocalDate());
     }
 
@@ -38,9 +39,7 @@ public class PostDBStore {
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    Post post = createPost(it);
-                    post.setCity(cityService.findById(it.getInt("city_id")));
-                    posts.add(post);
+                    posts.add(createPost(it, cityService));
                 }
             }
         } catch (Exception e) {
@@ -89,7 +88,7 @@ public class PostDBStore {
         return rsl;
     }
 
-    public Optional<Post> findById(int id) {
+    public Optional<Post> findById(int id, CityService cityService) {
         Optional<Post> rsl = Optional.empty();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement("SELECT * FROM post WHERE id = ?")
@@ -97,7 +96,7 @@ public class PostDBStore {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    rsl = Optional.of(createPost(it));
+                    rsl = Optional.of(createPost(it, cityService));
                 }
             }
         } catch (Exception e) {
