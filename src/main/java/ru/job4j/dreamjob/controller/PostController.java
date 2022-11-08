@@ -52,9 +52,9 @@ public class PostController {
     }
 
     @GetMapping("/formUpdatePost/{postId}")
-    public String formUpdatePost(Model model, @PathVariable("postId") int id, CityService cityService) {
+    public String formUpdatePost(Model model, @PathVariable("postId") int id) {
         model.addAttribute("cities", cityService.getAllCities());
-        model.addAttribute("post", postService.findById(id, cityService));
+        model.addAttribute("post", postService.findById(id));
         return "updatePost";
     }
 }

@@ -4,6 +4,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
 import ru.job4j.dreamjob.service.CityService;
 
@@ -25,21 +26,21 @@ public class PostDBStore {
         this.pool = pool;
     }
 
-    private Post createPost(ResultSet it, CityService cityService) throws SQLException {
+    private Post createPost(ResultSet it) throws SQLException {
         return new Post(it.getInt("id"), it.getString("name"),
                 it.getString("description"), it.getBoolean("visible"),
-                cityService.findById(it.getInt("city_id")),
+                new City(it.getInt("city_id")),
                 it.getTimestamp("created").toLocalDateTime().toLocalDate());
     }
 
-    public List<Post> findAll(CityService cityService) {
+    public List<Post> findAll() {
         List<Post> posts = new ArrayList<>();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(SELECT_ALL)
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    posts.add(createPost(it, cityService));
+                    posts.add(createPost(it));
                 }
             }
         } catch (Exception e) {
@@ -88,7 +89,7 @@ public class PostDBStore {
         return rsl;
     }
 
-    public Optional<Post> findById(int id, CityService cityService) {
+    public Optional<Post> findById(int id) {
         Optional<Post> rsl = Optional.empty();
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement("SELECT * FROM post WHERE id = ?")
@@ -96,7 +97,7 @@ public class PostDBStore {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
                 if (it.next()) {
-                    rsl = Optional.of(createPost(it, cityService));
+                    rsl = Optional.of(createPost(it));
                 }
             }
         } catch (Exception e) {

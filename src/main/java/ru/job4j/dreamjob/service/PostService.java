@@ -6,6 +6,7 @@ import ru.job4j.dreamjob.model.Post;
 import ru.job4j.dreamjob.store.PostDBStore;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @ThreadSafe
@@ -19,15 +20,19 @@ public class PostService {
     }
 
     public Collection<Post> findAll(CityService cityService) {
-        return store.findAll(cityService);
+        List<Post> posts = store.findAll();
+        posts.forEach(
+                post -> post.setCity(cityService.findById(post.getCity().getId()))
+        );
+        return posts;
     }
 
     public void add(Post post) {
         store.add(post);
     }
 
-    public Post findById(int id, CityService cityService) {
-        return store.findById(id, cityService).orElseThrow(NoSuchElementException::new);
+    public Post findById(int id) {
+        return store.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     public void replace(Post post) {
