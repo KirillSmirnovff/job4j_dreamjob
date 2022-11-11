@@ -25,7 +25,7 @@ public class PostController {
 
     @GetMapping("/posts")
     public String posts(Model model) {
-        model.addAttribute("posts", postService.findAll(cityService));
+        model.addAttribute("posts", postService.findAll());
         return "posts";
     }
 

@@ -15,14 +15,17 @@ public class PostService {
 
     private final PostDBStore store;
 
-    public PostService(PostDBStore store) {
+    private final CityService service;
+
+    public PostService(PostDBStore store, CityService service) {
         this.store = store;
+        this.service = service;
     }
 
-    public Collection<Post> findAll(CityService cityService) {
+    public Collection<Post> findAll() {
         List<Post> posts = store.findAll();
         posts.forEach(
-                post -> post.setCity(cityService.findById(post.getCity().getId()))
+                post -> post.setCity(service.findById(post.getCity().getId()))
         );
         return posts;
     }
