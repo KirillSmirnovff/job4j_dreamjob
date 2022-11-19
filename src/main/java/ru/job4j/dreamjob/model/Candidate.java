@@ -9,21 +9,19 @@ public class Candidate {
     private int id;
     private String name;
     private String description;
-    private final LocalDate created = LocalDateTime.now().toLocalDate();
+    private LocalDate created = LocalDateTime.now().toLocalDate();
     private City city;
     private byte[] photo;
 
     public Candidate() { }
 
-    public Candidate(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Candidate(int id, String name, String description) {
+    public Candidate(int id, String name, String description, LocalDate created, City city, byte[] photo) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.created = created;
+        this.city = city;
+        this.photo = photo;
     }
 
     public int getId() {

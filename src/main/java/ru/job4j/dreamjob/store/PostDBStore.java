@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
-import ru.job4j.dreamjob.service.CityService;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ public class PostDBStore {
     private final BasicDataSource pool;
     private static final Logger LOG = LoggerFactory.getLogger(PostDBStore.class.getName());
     private static final String SELECT_ALL = "SELECT * FROM post";
+    private static final String SELECT_ID = "SELECT * FROM post WHERE id = ?";
     private static final String INSERT_POST = "INSERT INTO post(name, city_id, description, created, visible) VALUES (?, ?, ?, ?, ?)";
     private static final String UPDATE_POST = "UPDATE post SET name = ?, description = ?, visible = ?, city_id = ? where id = ?";
 
@@ -92,7 +92,7 @@ public class PostDBStore {
     public Optional<Post> findById(int id) {
         Optional<Post> rsl = Optional.empty();
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM post WHERE id = ?")
+             PreparedStatement ps =  cn.prepareStatement(SELECT_ID)
         ) {
             ps.setInt(1, id);
             try (ResultSet it = ps.executeQuery()) {
