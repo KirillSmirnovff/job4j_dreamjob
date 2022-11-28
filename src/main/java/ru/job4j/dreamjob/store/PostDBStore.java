@@ -105,4 +105,8 @@ public class PostDBStore {
         }
         return rsl;
     }
+
+    public BasicDataSource getPool() {
+        return pool;
+    }
 }

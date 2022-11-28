@@ -106,4 +106,8 @@ public class CandidateDBStore {
         }
         return rsl;
     }
+
+    public BasicDataSource getPool() {
+        return pool;
+    }
 }

@@ -2,14 +2,13 @@ package ru.job4j.dreamjob.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Post implements Serializable {
     private int id;
     private String name;
     private String description;
-    private LocalDate created = LocalDateTime.now().toLocalDate();
+    private LocalDate created = LocalDate.now();
     private boolean visible;
     private City city;
 
