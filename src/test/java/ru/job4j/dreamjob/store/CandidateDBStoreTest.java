@@ -1,6 +1,7 @@
 package ru.job4j.dreamjob.store;
 
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import ru.job4j.dreamjob.Main;
 import ru.job4j.dreamjob.model.Candidate;
 import ru.job4j.dreamjob.service.CityService;
@@ -19,21 +20,25 @@ public class CandidateDBStoreTest {
     CityService service = new CityService();
     LocalDate date = LocalDate.now();
 
-    @Test
-    public void whenCreateCandidate() throws SQLException {
-        Candidate candidate = new Candidate(0, "Kirill Smirnov", "Java Developer",
-                date, service.findById(1));
-        store.add(candidate);
-        Candidate expected = store.findById(candidate.getId()).get();
-        assertEquals(candidate.getName(), expected.getName());
+    @AfterEach
+    public void wipeTable() throws SQLException {
         try (Connection connection = store.getPool().getConnection();
-             PreparedStatement statement = connection.prepareStatement("delete from candidate")) {
+            PreparedStatement statement = connection.prepareStatement("delete from candidate")) {
             statement.execute();
         }
     }
 
     @Test
-    public void whenFindAll() throws SQLException {
+    public void whenCreateCandidate() {
+        Candidate candidate = new Candidate(0, "Kirill Smirnov", "Java Developer",
+                date, service.findById(1));
+        store.add(candidate);
+        Candidate expected = store.findById(candidate.getId()).get();
+        assertEquals(candidate.getName(), expected.getName());
+    }
+
+    @Test
+    public void whenFindAll() {
         Candidate candidateOne = new Candidate(0, "Kirill Smirnov", "Java Developer",
                 date, service.findById(1));
         Candidate candidateTwo = new Candidate(0, "Petr Petrov", "Python Developer",
@@ -45,14 +50,10 @@ public class CandidateDBStoreTest {
         assertEquals(candidates.get(0).getDescription(), candidateOne.getDescription());
         assertEquals(candidates.get(1).getCity().getId(), candidateTwo.getCity().getId());
         assertEquals(candidates.get(1).getName(), candidateTwo.getName());
-        try (Connection connection = store.getPool().getConnection();
-             PreparedStatement statement = connection.prepareStatement("delete from candidate")) {
-            statement.execute();
-        }
     }
 
     @Test
-    public void whenReplace() throws SQLException {
+    public void whenReplace() {
         Candidate candidate = new Candidate(0, "Kirill Smirnov", "Java Developer",
                 date, service.findById(1));
         store.add(candidate);
@@ -61,9 +62,5 @@ public class CandidateDBStoreTest {
         store.replace(candidate);
         Candidate fromDB = store.findById(candidate.getId()).get();
         assertEquals(fromDB.getName(), candidate.getName());
-        try (Connection connection = store.getPool().getConnection();
-            PreparedStatement statement = connection.prepareStatement("delete from candidate")) {
-            statement.execute();
-        }
     }
 }

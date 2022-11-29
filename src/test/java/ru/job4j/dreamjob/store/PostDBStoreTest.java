@@ -1,6 +1,7 @@
 package ru.job4j.dreamjob.store;
 
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import ru.job4j.dreamjob.Main;
 import ru.job4j.dreamjob.model.City;
 import ru.job4j.dreamjob.model.Post;
@@ -21,13 +22,8 @@ public class PostDBStoreTest {
     CityService service = new CityService();
     LocalDate created = LocalDate.now();
 
-    @Test
-    public void whenCreatePost() throws SQLException {
-        Post post = new Post(0, "Java Job", "High risk-high reward project",
-                true, new City(1, "Moscow"), created);
-        store.add(post);
-        Post postInDb = store.findById(post.getId()).get();
-        assertThat(postInDb.getName(), is(post.getName()));
+    @AfterEach
+    public void wipeTable() throws SQLException {
         try (Connection connection = store.getPool().getConnection();
              PreparedStatement ps = connection.prepareStatement("delete from post")) {
             ps.execute();
@@ -35,7 +31,16 @@ public class PostDBStoreTest {
     }
 
     @Test
-    public void whenFindAll() throws SQLException {
+    public void whenCreatePost() {
+        Post post = new Post(0, "Java Job", "High risk-high reward project",
+                true, new City(1, "Moscow"), created);
+        store.add(post);
+        Post postInDb = store.findById(post.getId()).get();
+        assertThat(postInDb.getName(), is(post.getName()));
+    }
+
+    @Test
+    public void whenFindAll() {
         Post postOne = new Post(0, "Java Job", "High risk-high reward project",
                 true, service.findById(1), created);
         Post postTwo = new Post(1, "Python Job", "Very relaxing project with omega salary",
@@ -47,14 +52,10 @@ public class PostDBStoreTest {
         assertThat(postsInDb.get(1).getName(), is(postTwo.getName()));
         assertThat(postsInDb.get(0).getCity().getId(), is(postOne.getCity().getId()));
         assertThat(postsInDb.get(1).getCity().getId(), is(postTwo.getCity().getId()));
-        try (Connection connection = store.getPool().getConnection();
-             PreparedStatement ps = connection.prepareStatement("delete from post")) {
-            ps.execute();
-        }
     }
 
     @Test
-    public void whenReplace() throws SQLException {
+    public void whenReplace() {
         Post post = new Post(0, "Java Job", "High risk-high reward project",
                 true, service.findById(1), created);
         store.add(post);
@@ -64,9 +65,5 @@ public class PostDBStoreTest {
         Post postInDb = store.findById(post.getId()).get();
         assertThat(replace, is(true));
         assertThat(post.getName(), is(postInDb.getName()));
-        try (Connection connection = store.getPool().getConnection();
-             PreparedStatement ps = connection.prepareStatement("delete from post")) {
-            ps.execute();
-        }
     }
 }
