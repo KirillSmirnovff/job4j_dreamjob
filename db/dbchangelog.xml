@@ -12,4 +12,8 @@
     <include file="scripts/002_ddl_alter_table_post_add_city_id_column.sql" relativeToChangelogFile="true"/>
     <include file="scripts/003_ddl_alter_table_post_add_description_created_visible_columns.sql" relativeToChangelogFile="true"/>
     <include file="scripts/004_ddl_create_candidate_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/006_ddl_create_users_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/007_ddl_alter_table_email.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/008_ddl_alter_table_users_add_name_column.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/009_ddl_alter_table_users_alter_columns_to_not_null.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

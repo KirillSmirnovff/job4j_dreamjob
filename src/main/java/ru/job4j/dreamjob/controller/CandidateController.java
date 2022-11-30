@@ -1,7 +1,6 @@
 package ru.job4j.dreamjob.controller;
 
 import net.jcip.annotations.ThreadSafe;
-import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
