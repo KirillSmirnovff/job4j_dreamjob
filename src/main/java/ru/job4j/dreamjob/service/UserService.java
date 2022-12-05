@@ -17,7 +17,15 @@ public class UserService {
         this.store = store;
     }
 
+    private boolean isValid(User user) {
+        return (user.getEmail().length() > 5 && user.getPassword().length() > 7);
+    }
+
     public Optional<User> add(User user) {
-        return store.add(user);
+        Optional<User> result = Optional.empty();
+        if (isValid(user)) {
+            result = store.add(user);
+        }
+        return result;
     }
 }

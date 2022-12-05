@@ -22,29 +22,23 @@ public class UserDBStore {
         this.pool = pool;
     }
 
-    private boolean isValid(User user) {
-        return (user.getEmail().length() > 5 && user.getPassword().length() > 7);
-    }
-
     public Optional<User> add(User user) {
         Optional<User> result = Optional.empty();
-        if (isValid(user)) {
-            try (Connection connection = pool.getConnection();
-                 PreparedStatement statement = connection.prepareStatement(INSERT_USER,
-                         PreparedStatement.RETURN_GENERATED_KEYS)) {
-                statement.setString(1, user.getName());
-                statement.setString(2, user.getEmail());
-                statement.setString(3, user.getPassword());
-                statement.execute();
-                try (ResultSet rs = statement.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        user.setId(rs.getInt(1));
-                        result = Optional.of(user);
-                    }
+        try (Connection connection = pool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(INSERT_USER,
+                     PreparedStatement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, user.getName());
+            statement.setString(2, user.getEmail());
+            statement.setString(3, user.getPassword());
+            statement.execute();
+            try (ResultSet rs = statement.getGeneratedKeys()) {
+                if (rs.next()) {
+                    user.setId(rs.getInt(1));
+                    result = Optional.of(user);
                 }
-            } catch (Exception e) {
-                LOG.error("Error!", e);
             }
+        } catch (Exception e) {
+            LOG.error("Error!", e);
         }
         return result;
     }
