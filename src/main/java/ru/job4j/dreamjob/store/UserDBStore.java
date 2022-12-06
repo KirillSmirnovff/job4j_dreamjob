@@ -18,7 +18,7 @@ public class UserDBStore {
     private final BasicDataSource pool;
     private static final Logger LOG = LoggerFactory.getLogger(PostDBStore.class.getName());
     private static final String INSERT_USER = "INSERT INTO users(name, email, password) VALUES (?, ?, ?)";
-    private static final String SELECT_USER = "SELECT * FROM users WHERE email = ?";
+    private static final String SELECT_USER = "SELECT * FROM users WHERE email = ? AND password = ?";
 
     public UserDBStore(BasicDataSource pool) {
         this.pool = pool;
@@ -54,11 +54,12 @@ public class UserDBStore {
         return result;
     }
 
-    public Optional<User> findUserByEmailAndPassword(String email) {
+    public Optional<User> findUserByEmailAndPassword(String email, String password) {
         Optional<User> result = Optional.empty();
         try (Connection connection = pool.getConnection();
             PreparedStatement statement =  connection.prepareStatement(SELECT_USER)) {
             statement.setString(1, email);
+            statement.setString(2, password);
             try (ResultSet rs = statement.executeQuery()) {
                 if (rs.next()) {
                     result = Optional.of(getUser(rs));

@@ -31,13 +31,6 @@ public class UserService {
     }
 
     public Optional<User> findUserByEmailAndPassword(String email, String password) {
-        Optional<User> result = store.findUserByEmailAndPassword(email);
-        if (result.isPresent()) {
-            String userPassword = result.get().getPassword();
-            if (!Objects.equals(password, userPassword)) {
-                result = Optional.empty();
-            }
-        }
-        return result;
+        return store.findUserByEmailAndPassword(email, password);
     }
 }
