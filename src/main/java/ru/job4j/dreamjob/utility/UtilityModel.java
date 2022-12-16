@@ -5,21 +5,19 @@ import ru.job4j.dreamjob.model.User;
 
 import javax.servlet.http.HttpSession;
 
-public class ModelWithUser {
+public final class UtilityModel {
 
-    private final  Model model;
+    private UtilityModel() {
+        throw new UnsupportedOperationException("This is a utility class");
+    }
 
-    public ModelWithUser(Model model, HttpSession session) {
+    public static  void addUser(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             user = new User();
             user.setName("Гость");
         }
         model.addAttribute("user", user);
-        this.model = model;
     }
 
-    public void addAttribute(String key, Object value) {
-        model.addAttribute(key, value);
-    }
 }

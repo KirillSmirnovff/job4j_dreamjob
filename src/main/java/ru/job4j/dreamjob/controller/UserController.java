@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.dreamjob.model.User;
 import ru.job4j.dreamjob.service.UserService;
-import ru.job4j.dreamjob.utility.ModelWithUser;
+import ru.job4j.dreamjob.utility.UtilityModel;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -27,7 +27,7 @@ public class UserController {
 
     @GetMapping("/formAddUser")
     public String addUser(Model model, HttpSession session) {
-        new ModelWithUser(model, session);
+        UtilityModel.addUser(model, session);
         return "addUser";
     }
 
